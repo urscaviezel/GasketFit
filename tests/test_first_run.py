@@ -71,3 +71,15 @@ class FirstRun(unittest.TestCase):
                 check_case_sensitive_layout(app)
             (internal/'rtree.libs/libspatialindex-test.so').write_bytes(b'test')
             check_case_sensitive_layout(app)
+
+    def test_linux_cleanup_keeps_application_and_qt_libraries(self):
+        from build_portable import use_linux_system_libraries, LINUX_SYSTEM_LIBRARIES
+        with tempfile.TemporaryDirectory() as folder:
+            app = Path(folder)
+            internal = app/'_internal'
+            internal.mkdir()
+            for name in (*LINUX_SYSTEM_LIBRARIES, 'libQt6Core.so.6', 'libpython3.12.so.1.0', 'libcrypto.so.3'):
+                (internal/name).write_bytes(b'test')
+            use_linux_system_libraries(app)
+            self.assertEqual({p.name for p in internal.iterdir()},
+                             {'libQt6Core.so.6', 'libpython3.12.so.1.0', 'libcrypto.so.3'})

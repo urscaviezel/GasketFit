@@ -14,6 +14,19 @@ import zipfile
 ROOT = Path(__file__).resolve().parent
 
 
+# Desktop integration libraries resolved from the target distribution.
+# Exact list validated with the CachyOS-cleaned 0.62.1 package and Ubuntu 24.04.
+LINUX_SYSTEM_LIBRARIES = ('libatk-1.0.so.0', 'libatk-bridge-2.0.so.0', 'libatspi.so.0', 'libblkid.so.1', 'libcairo-gobject.so.2', 'libcairo.so.2', 'libdbus-1.so.3', 'libepoxy.so.0', 'libfontconfig.so.1', 'libfreetype.so.6', 'libgcrypt.so.20', 'libgdk-3.so.0', 'libgdk_pixbuf-2.0.so.0', 'libgio-2.0.so.0', 'libglib-2.0.so.0', 'libgmodule-2.0.so.0', 'libgobject-2.0.so.0', 'libgpg-error.so.0', 'libgthread-2.0.so.0', 'libgtk-3.so.0', 'libharfbuzz.so.0', 'libmount.so.1', 'libpango-1.0.so.0', 'libpangocairo-1.0.so.0', 'libpangoft2-1.0.so.0', 'libselinux.so.1', 'libsystemd.so.0')
+
+
+def use_linux_system_libraries(application):
+    internal = application/'_internal'
+    for name in LINUX_SYSTEM_LIBRARIES:
+        path = internal/name
+        if path.is_file() or path.is_symlink():
+            path.unlink()
+
+
 def require_case_sensitive_folder(folder):
     import tempfile
     with tempfile.TemporaryDirectory(dir=folder) as temporary:
@@ -112,6 +125,7 @@ def main():
     output = Path(plan['output'])
     application = output/('GasketFit.app' if sys.platform == 'darwin' else 'GasketFit')
     if sys.platform == 'linux':
+        use_linux_system_libraries(application)
         check_case_sensitive_layout(application)
     executable = application/('Contents/MacOS/GasketFit' if sys.platform == 'darwin' else 'GasketFit')
     # Use isolated user data during the packaged smoke check.

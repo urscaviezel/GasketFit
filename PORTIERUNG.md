@@ -101,5 +101,11 @@ Der CachyOS-Test von 0.62.0 fand einen Verpackungsfehler: `Rtree.libs` statt
 `rtree.libs`. Der neue Build entsteht vollständig auf ext4 und prüft diesen Fall.
 Die Ubuntu-24.04-Buildbasis bleibt vorerst bestehen; Unterstützung für ältere
 glibc-Versionen (Debian 12 / Ubuntu 22.04) wird damit nicht zugesichert.
-Systembibliotheken werden nicht pauschal entfernt. Eine kleinere Bibliotheksauswahl
-und eine ältere Buildbasis benötigen eigene Abhängigkeits- und Distributionstests.
+Das Linux-Release-Paket wurde nach dem CachyOS-Test am 22.11.2026 ersetzt:
+27 Desktop-Systembibliotheken werden nun vom Zielsystem verwendet, statt die
+Ubuntu-Kopien mitzuliefern (u.a. GTK, GLib, Fontconfig, FreeType und D-Bus).
+Die genaue Liste steht in `build_portable.py`; Qt, Python und die numerischen
+Bibliotheken bleiben enthalten. Benötigt wird ein eingerichtetes Desktop-Linux
+mit diesen Bibliotheken. Das bereinigte Paket startet laut Anwender auf CachyOS;
+Fensterstart, Berechnungen und Exporte wurden zusätzlich unter Ubuntu 24.04 geprüft.
+Die ältere Buildbasis bleibt eine separate, noch ausstehende Verbesserung.
