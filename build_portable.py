@@ -14,6 +14,33 @@ import zipfile
 ROOT = Path(__file__).resolve().parent
 
 
+def require_case_sensitive_folder(folder):
+    import tempfile
+    with tempfile.TemporaryDirectory(dir=folder) as temporary:
+        probe = Path(temporary)/'CaseSensitive'
+        probe.write_text('probe')
+        if (probe.parent/'casesensitive').exists():
+            raise RuntimeError('Linux builds require a case-sensitive filesystem for source, venv and output (use ext4, not /mnt/c).')
+
+
+def check_case_sensitive_layout(application):
+    """Validate the paths rtree actually resolves from its wheel RECORD."""
+    import csv
+    internal = application/'_internal'
+    names = [p.name for p in internal.iterdir()]
+    if len({name.casefold() for name in names}) != len(names):
+        raise RuntimeError('Case-colliding bundled library paths')
+    if 'Rtree.libs' in names or 'rtree.libs' not in names:
+        raise RuntimeError('Expected bundled rtree.libs with lowercase r')
+    records = list(internal.glob('*rtree*.dist-info/RECORD'))
+    if not records:
+        raise RuntimeError('Missing rtree package metadata')
+    libraries = [row[0] for record in records for row in csv.reader(record.read_text().splitlines())
+                 if row and row[0].startswith('rtree.libs/') and 'libspatialindex' in row[0]]
+    if not libraries or any(not (internal/name).is_file() for name in libraries):
+        raise RuntimeError('Bundled spatialindex library does not match rtree RECORD')
+
+
 def build_plan(system=None, machine=None):
     from gasketfit import __version__
     from gasketfit.platform_support import package_name
@@ -71,6 +98,9 @@ def main():
     if args.plan:
         print(json.dumps(plan, indent=2))
         return
+    if sys.platform == 'linux':
+        require_case_sensitive_folder(ROOT)
+        require_case_sensitive_folder(Path(sys.prefix))
     from gasketfit import __version__
     from datetime import datetime, timezone
     (ROOT/'gasketfit/build_info.json').write_text(json.dumps(dict(version=__version__,
@@ -81,10 +111,18 @@ def main():
     subprocess.run(plan['command'], cwd=ROOT, env=env, check=True)
     output = Path(plan['output'])
     application = output/('GasketFit.app' if sys.platform == 'darwin' else 'GasketFit')
+    if sys.platform == 'linux':
+        check_case_sensitive_layout(application)
     executable = application/('Contents/MacOS/GasketFit' if sys.platform == 'darwin' else 'GasketFit')
     # Use isolated user data during the packaged smoke check.
     import tempfile
     with tempfile.TemporaryDirectory() as temporary:
+        if sys.platform == 'linux':
+            require_case_sensitive_folder(Path(temporary))
+            # Exercise a copy, away from the build tree and its environment.
+            clean_application = Path(temporary)/'GasketFit'
+            shutil.copytree(application, clean_application, symlinks=True)
+            executable = clean_application/'GasketFit'
         report = Path(temporary)/'startup.json'
         env['GASKETFIT_DATA_DIR'] = str(Path(temporary)/'data')
         process = subprocess.run([str(executable), '--startup-check', str(report)], env=env, timeout=180)

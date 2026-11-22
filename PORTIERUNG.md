@@ -1,7 +1,7 @@
 # GasketFit: Linux und macOS vorbereiten
 
 Die freigegebene Windows-Referenz bleibt **0.60.0**. Die Portierung wird getrennt
-ab **0.61.0** entwickelt; die öffentliche Beta ist **0.62.0**.
+ab **0.61.0** entwickelt; die öffentliche Beta ist **0.62.1**.
 Qt/PySide bleibt das UI-Framework. Windows bietet portable ZIP und Setup;
 der Installer speichert Benutzerdaten unter `%LOCALAPPDATA%\GasketFit`.
 Die Version 0.61.0 wurde inzwischen auch auf CachyOS kompiliert und mit
@@ -41,6 +41,10 @@ Wayland-Weg ist noch nicht praktisch geprüft.
 
 Linux-Pakete auf Linux bauen, macOS-Pakete auf dem Mac. Die Architektur wird vom
 Build-Rechner übernommen: x64 oder arm64. Ein Windows-Build ist kein Mac-/Linux-Port.
+Unter Linux müssen Quellordner und venv auf einem Dateisystem mit Unterscheidung
+von Groß-/Kleinschreibung liegen, z.B. ext4. Unter WSL nicht in `/mnt/c` bauen.
+Der Build lehnt ungeeignete Dateisysteme ab und prüft die Bibliothekspfade aus
+der rtree-Metadatendatei. Der Starttest läuft mit einer separaten Kopie unter `/tmp`.
 Der Build führt anschließend den Paket-Starttest einschließlich Berechnung und
 3MF-Export aus. Bei einem Fehler wird kein fertiges ZIP veröffentlicht.
 
@@ -90,3 +94,12 @@ automatische Prüfungen, eine ausgelassene Windows-API-Prüfung, zusätzlich
 Das gespeicherte Projekt GasketFit_test.padfit wurde ohne Kopfscan berechnet
 und als echtes OpenGL-Modell im Linux-Fenster dargestellt.
 Das ersetzt noch keinen Test auf dem separaten Linux-Rechner oder auf macOS.
+
+### Korrektur in 0.62.1
+
+Der CachyOS-Test von 0.62.0 fand einen Verpackungsfehler: `Rtree.libs` statt
+`rtree.libs`. Der neue Build entsteht vollständig auf ext4 und prüft diesen Fall.
+Die Ubuntu-24.04-Buildbasis bleibt vorerst bestehen; Unterstützung für ältere
+glibc-Versionen (Debian 12 / Ubuntu 22.04) wird damit nicht zugesichert.
+Systembibliotheken werden nicht pauschal entfernt. Eine kleinere Bibliotheksauswahl
+und eine ältere Buildbasis benötigen eigene Abhängigkeits- und Distributionstests.

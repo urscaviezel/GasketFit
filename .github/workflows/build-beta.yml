@@ -23,7 +23,7 @@ jobs:
         env:
           PYTHONPATH: tests
           QT_QPA_PLATFORM: offscreen
-        run: python -m unittest test_beta test_platform_support test_languages_updates test_driver_profile test_thumbnails test_print_frame
+        run: python -m unittest test_first_run test_beta test_platform_support test_languages_updates test_driver_profile test_thumbnails test_print_frame
       - name: Windows portable and installer
         if: runner.os == 'Windows'
         run: |

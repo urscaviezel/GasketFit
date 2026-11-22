@@ -244,6 +244,8 @@ class SettingsDialog(W.QDialog):
     def remote_changed(self):
         self.remote.clear()
         for item in self.controller.languages:
+            if Path(item['name']).stem in self.localizer.catalogs:
+                continue
             self.remote.addItem(item["name"], item)
         self.download.setEnabled(self.remote.count() > 0 and "download_language" not in self.controller.jobs)
         self.language_status.setText(tr(self.controller.language_status) if self.controller.language_status else tr("Sprachdateien auf GitHub: {v0}", v0=len(self.controller.languages)))

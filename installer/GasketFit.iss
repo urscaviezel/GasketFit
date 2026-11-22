@@ -1,5 +1,5 @@
 #ifndef AppVersion
-  #define AppVersion "0.62.0"
+  #define AppVersion "0.62.1"
 #endif
 #ifndef AppSource
   #define AppSource "..\dist\v" + AppVersion + "\GasketFit"
@@ -53,7 +53,7 @@ french.KeepSettings=Conserver vos paramètres GasketFit pour une installation ul
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [Files]
-Source: "{#AppSource}\*"; DestDir: "{app}"; Excludes: "portable.flag,installed.flag,settings.json,cache\*,updates\*,lang\*"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#AppSource}\*"; DestDir: "{app}"; Excludes: "\portable.flag,\installed.flag,\settings.json,\cache\*,\updates\*,\lang\*"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "installed.flag"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]

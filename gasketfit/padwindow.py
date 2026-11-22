@@ -312,7 +312,6 @@ class PadWindow(W.QMainWindow):
         self.language_action = self.settings_menu.addAction(tr("Sprache"), lambda: self.show_settings("language"))
         self.settings_menu.addAction(tr("Aktualisierungen"), lambda: self.show_settings("updates"))
         self.controls_action = self.settings_menu.addAction(tr("Tastenbelegung"), lambda: self.show_settings("controls"))
-        self.design_menu = self.menuBar().addMenu(tr("Entwurf"))
         self.menuBar().addAction(tr("Build-Informationen"), lambda: build_info(self))
         self._settings_dialog = None
         current().changed.connect(self.language_changed)
@@ -396,7 +395,7 @@ class PadWindow(W.QMainWindow):
         self.forehead_controls.setVisible(opened)
         self.closed_radius_row.setVisible(not opened)
         self.strain_view.setText(tr('Längenänderung gegenüber Stirnvorlage: Grün gering · Rot ab 4 %') if opened else tr('Längenänderung gegenüber Probe 04: Grün gering · Rot ab 4 %'))
-        for widget in (self.include_base, self.closed_shell, self.nose_enabled, self.nose_pockets):
+        for widget in (self.nose_enabled, self.nose_pockets):
             widget.setVisible(not opened)
         self.top_strap.setVisible(True)
         self.top_strap.setToolTip(tr('37 mm freie Breite, 4 mm Durchlass, runder 4-mm-Quersteg. Vorne an der oberen Stirnauflage abgestützt.') if opened else tr('37 mm freie Breite, 4 mm Durchlass, runder 4-mm-Quersteg. Beide Halter sind nach hinten an der Auflage abgestützt.'))
@@ -494,15 +493,15 @@ class PadWindow(W.QMainWindow):
         p.addWidget(label(tr("Dieser Schritt erzeugt nur die Polsterauflage. Magnetadapter, Nasenteil und Verbindungshülle sind noch nicht enthalten."), "hint"))
         p.addStretch()
         p = self.pages[1]
-        p.addWidget(label(tr("Magnetische Basis positionieren"), "section"))
+        p.addWidget(label(tr("HMD ausrichten"), "section"))
         self.include_base = W.QCheckBox(tr("Magnetbasis hinzufügen"))
         self.include_base.setChecked(True)
         self.include_base.toggled.connect(self.base_changed)
-        p.addWidget(self.include_base)
+        self.include_base.hide()
         self.closed_shell = W.QCheckBox(tr("Geschlossene Hülle · Probe 07 · 1,5 mm"))
         self.closed_shell.setChecked(True)
         self.closed_shell.toggled.connect(self.base_changed)
-        p.addWidget(self.closed_shell)
+        self.closed_shell.hide()
         opacity_row = W.QHBoxLayout()
         opacity_row.addWidget(label(tr("HMD-Deckkraft")))
         self.hmd_alpha = W.QSlider(QtCore.Qt.Orientation.Horizontal)
@@ -642,8 +641,8 @@ class PadWindow(W.QMainWindow):
             self.velcro.setValue(values.get('velcro', 0.))
             self.max_adjustment.setValue(values.get('max_adjustment', 12.))
             self.refine_pose.setChecked(False)
-            self.include_base.setChecked(values.get('include_base', True))
-            self.closed_shell.setChecked(values.get('closed_shell', True))
+            self.include_base.setChecked(True)
+            self.closed_shell.setChecked(True)
             for spin, value in zip(self.base_spins, values.get('base_pose', values['pose'])):
                 spin.setValue(value)
             self.base_positioned = 'base_pose' in values
@@ -1279,7 +1278,6 @@ class PadWindow(W.QMainWindow):
         current().retranslate(self)
         self.language_action.setText(tr("Sprache"))
         self.controls_action.setText(tr("Tastenbelegung"))
-        self.design_menu.setTitle(tr("Entwurf"))
         self.update_notice()
         self.refresh()
         self.update_result_text()

@@ -14,6 +14,12 @@ if '--startup-check' in sys.argv:
         app=QApplication([])
         from gasketfit.localization import current
         current().settings.update(auto_updates=False, auto_languages=False)
+        assert {'de', 'en', 'fr'} <= current().catalogs.keys(), 'Missing bundled standard languages'
+        original_language = current().language
+        for code, expected in [('en', 'Settings'), ('fr', 'Paramètres')]:
+            current().language = code
+            assert current().translate('Einstellungen') == expected
+        current().language = original_language
         window=PadWindow()
         window.switch_workflow('open')
         assert window.workflow == 'open' and len(window.workflow_base().faces) > 0

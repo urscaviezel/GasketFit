@@ -52,6 +52,16 @@ def atomic_json(path, data):
     os.replace(temp, path)
 
 
+def system_language():
+    """Use the user's UI language, not the region/date-format locale."""
+    try:
+        preferred = QtCore.QLocale.system().uiLanguages()
+        code = preferred[0].replace('_', '-').split('-')[0].lower() if preferred else 'en'
+        return code if code in ('de', 'en', 'fr') else 'en'
+    except (RuntimeError, ValueError):
+        return 'en'
+
+
 class Localizer(QtCore.QObject):
     changed = QtCore.Signal(str, str)
     navigation_changed = QtCore.Signal()
@@ -63,7 +73,7 @@ class Localizer(QtCore.QObject):
         self.directory = self.root / "lang"
         self.directory.mkdir(parents=True, exist_ok=True)
         self.settings_path = self.root / "settings.json"
-        self.settings = {"language": QtCore.QLocale.system().name().split("_")[0] if QtCore.QLocale.system().name().split("_")[0] in ("de", "en", "fr") else "en",
+        self.settings = {"language": system_language(),
                          "auto_updates": True, "auto_languages": True, "navigation": {}}
         if self.settings_path.exists():
             try:

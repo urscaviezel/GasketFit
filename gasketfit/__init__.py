@@ -1,5 +1,5 @@
 """GasketFit: local PFDMR fitting assistant."""
-__version__ = "0.62.0"
+__version__ = "0.62.1"
 RELEASE_CHANNEL = "beta"
 
 # Select matching Qt/PyOpenGL backends before any viewer imports OpenGL.
