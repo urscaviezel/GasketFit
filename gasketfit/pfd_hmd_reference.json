@@ -1,0 +1,114 @@
+{
+  "units": "mm",
+  "hmd_and_headband_coupled": true,
+  "separate_headband_visibility_required": false,
+  "oem_hmd_adapter_relative_position_exact": true,
+  "oem_to_app": [
+    [
+      0.9999999487428679,
+      -6.054106742890898e-05,
+      0.00031440269309077995,
+      -0.017603422866947986
+    ],
+    [
+      -4.373470261759614e-05,
+      -0.9985848137679585,
+      -0.05318240121787456,
+      -14.779558085403751
+    ],
+    [
+      0.00031717747406634025,
+      0.05318238474159133,
+      -0.9985847652311028,
+      76.12268237502002
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "old_mod_registration_approximate_only": true,
+  "app_assets_replaced": true,
+  "magnet_fit_pending": false,
+  "preview_only_simplified": true,
+  "parts": [
+    {
+      "name": "Gehaeuseschale",
+      "original_faces": 87886,
+      "preview_faces": 19334
+    },
+    {
+      "name": "Frontglas",
+      "original_faces": 5598,
+      "preview_faces": 1230
+    },
+    {
+      "name": "Augenseitige_Abdeckung",
+      "original_faces": 38056,
+      "preview_faces": 8372
+    },
+    {
+      "name": "Optik_links",
+      "original_faces": 76094,
+      "preview_faces": 16740
+    },
+    {
+      "name": "Optik_rechts",
+      "original_faces": 77078,
+      "preview_faces": 16956
+    },
+    {
+      "name": "Hinterkopf_Aussenschale",
+      "original_faces": 81882,
+      "preview_faces": 18014
+    },
+    {
+      "name": "Hinterkopf_Innenschale",
+      "original_faces": 56780,
+      "preview_faces": 12490
+    },
+    {
+      "name": "Band_rechts",
+      "original_faces": 44502,
+      "preview_faces": 9790
+    },
+    {
+      "name": "Band_links",
+      "original_faces": 37896,
+      "preview_faces": 8336
+    },
+    {
+      "name": "Buegel_rechts",
+      "original_faces": 26968,
+      "preview_faces": 5932
+    },
+    {
+      "name": "Buegel_links",
+      "original_faces": 23650,
+      "preview_faces": 5202
+    },
+    {
+      "name": "Bandabdeckung_rechts",
+      "original_faces": 1900,
+      "preview_faces": 1000
+    },
+    {
+      "name": "Bandabdeckung_links",
+      "original_faces": 1786,
+      "preview_faces": 1000
+    },
+    {
+      "name": "Verstellrad_Abdeckung",
+      "original_faces": 1282,
+      "preview_faces": 1000
+    }
+  ],
+  "source": "PFDMR OEM exterior and headband",
+  "registration": "OEM shared coordinate system; exact relative HMD/adapter placement",
+  "preview_only": true,
+  "optical_calibration": false,
+  "collision_samples_from_full_geometry": true,
+  "collision_sample_count": 2533
+}

@@ -1,0 +1,38 @@
+name: Beta bug report
+description: Report a reproducible problem with GasketFit Beta.
+title: "[Beta] "
+body:
+  - type: markdown
+    attributes:
+      value: "This issue is public. Please do not upload personal head scans or project files unless you intentionally want to publish them."
+  - type: input
+    id: version
+    attributes:
+      label: GasketFit version
+      placeholder: 0.62.0
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system and package
+      placeholder: Windows 11 portable / Setup, CachyOS source, Ubuntu ZIP, macOS
+    validations:
+      required: true
+  - type: dropdown
+    id: workflow
+    attributes:
+      label: Workflow
+      options:
+        - Closed gasket
+        - Open gasket with scan
+        - Open gasket without scan
+        - Installation / updates / general UI
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps, expected result and actual result
+    validations:
+      required: true

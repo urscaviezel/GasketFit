@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="240" viewBox="0 0 960 240"><rect width="960" height="240" rx="30" fill="#070b1a"/><g transform="translate(32 32) scale(.34375)"><defs><linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#22d3ff"/><stop offset="1" stop-color="#6389ff"/></linearGradient><linearGradient id="pad"><stop stop-color="#a349ff"/><stop offset="1" stop-color="#663cff"/></linearGradient></defs>
+ <rect width="512" height="512" rx="112" fill="#0e1530"/>
+ <path d="M123 177 Q256 110 389 177" fill="none" stroke="url(#pad)" stroke-width="30" stroke-linecap="round"/>
+ <path d="M111 215 Q256 147 401 215 L388 327 Q384 363 348 351 L292 331 Q256 309 220 331 L164 351 Q128 363 124 327 Z" fill="#151d3c" stroke="url(#rim)" stroke-width="24" stroke-linejoin="round"/>
+ <path d="M166 236 Q256 207 346 236" fill="none" stroke="#22d3ff" stroke-width="10" stroke-linecap="round" opacity=".45"/>
+</g><text x="246" y="131" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="80" font-weight="600">GasketFit</text><text x="250" y="178" fill="#22d3ff" font-family="Segoe UI,Arial,sans-serif" font-size="25" letter-spacing="7">BETA · PFDMR</text></svg>
