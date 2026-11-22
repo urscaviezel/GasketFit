@@ -37,6 +37,7 @@ jobs:
           name: GasketFit-beta-${{ runner.os }}-${{ runner.arch }}
           path: |
             dist/*.zip
+            dist/*.tar.gz
             dist/*-Setup.exe
             dist/checksums.json
           if-no-files-found: error

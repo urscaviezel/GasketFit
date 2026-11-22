@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import zipfile
+import tarfile
 
 ROOT = Path(__file__).resolve().parent
 
@@ -62,7 +63,7 @@ def build_plan(system=None, machine=None):
     filename = package_name(__version__, system, machine)
     if system not in ('linux', 'darwin') or filename is None:
         raise ValueError('Use build_windows.py on Windows; supported Unix targets are Linux and macOS x64/arm64.')
-    output = ROOT/'dist'/('v'+__version__)/filename.removesuffix('.zip')
+    output = ROOT/'dist'/('v'+__version__)/filename.removesuffix('.tar.gz').removesuffix('.zip')
     command = [sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', '--windowed', '--onedir',
                '--name', 'GasketFit', '--paths', str(ROOT), '--distpath', str(output),
                '--workpath', str(ROOT/'build'/system), '--specpath', str(ROOT/'build'/system)]
@@ -98,6 +99,12 @@ def zip_tree(folder, destination):
                         dirs.remove(name)
                 elif path.is_file():
                     archive.write(path, relative)
+
+
+def tar_tree(folder, destination):
+    """Preserve Unix permissions and symlinks in the native Linux format."""
+    with tarfile.open(destination, 'w:gz', dereference=False) as archive:
+        archive.add(folder, arcname=folder.name)
 
 
 def main():
@@ -166,10 +173,10 @@ def main():
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, dest)
     archive = ROOT/'dist'/plan['filename']
-    zip_tree(package, archive)
+    (tar_tree if sys.platform == 'linux' else zip_tree)(package, archive)
     with archive.open('rb') as stream:
         checksum = hashlib.file_digest(stream, 'sha256').hexdigest()
-    archive.with_suffix('.zip.sha256').write_text(checksum+'  '+archive.name+'\n')
+    Path(str(archive)+'.sha256').write_text(checksum+'  '+archive.name+'\n')
     sums_path = ROOT/'dist/checksums.json'
     sums = json.loads(sums_path.read_text()) if sums_path.exists() else {}
     sums[archive.name] = checksum

@@ -13,7 +13,7 @@ import numpy as np
 
 class PlatformSupport(unittest.TestCase):
     def test_native_package_names(self):
-        self.assertEqual(ports.package_name('1.2.3','linux','x86_64'),'GasketFit-1.2.3-Linux-x64.zip')
+        self.assertEqual(ports.package_name('1.2.3','linux','x86_64'),'GasketFit-1.2.3-Linux-x64.tar.gz')
         self.assertEqual(ports.package_name('1.2.3','darwin','arm64'),'GasketFit-1.2.3-macOS-arm64.zip')
         self.assertEqual(ports.package_name('1.2.3','win32','AMD64'),'GasketFit-1.2.3-Windows-x64.zip')
         self.assertIsNone(ports.package_name('1.2.3','linux','unknown'))
@@ -38,9 +38,9 @@ class PlatformSupport(unittest.TestCase):
             launch.assert_not_called()
 
     def test_native_release_selection(self):
-        release={'tag_name':'v99.0.0','assets':[{'name':'GasketFit-99.0.0-Linux-x64.zip'},{'name':'GasketFit-99.0.0-Windows-x64.zip'},{'name':'checksums.json'}]}
+        release={'tag_name':'v99.0.0','assets':[{'name':'GasketFit-99.0.0-Linux-x64.tar.gz'},{'name':'GasketFit-99.0.0-Windows-x64.zip'},{'name':'checksums.json'}]}
         with patch.object(ports.sys,'platform','linux'), patch.object(ports.platform,'machine',return_value='x86_64'), patch.object(online,'github_json',return_value=[release]):
-            self.assertEqual(online.check_update()['package']['name'],'GasketFit-99.0.0-Linux-x64.zip')
+            self.assertEqual(online.check_update()['package']['name'],'GasketFit-99.0.0-Linux-x64.tar.gz')
 
     def test_unix_invalid_mesh_never_launches_windows_repair(self):
         mesh=Mesh(np.array([[0.,0,0],[1,0,0],[0,1,0]]),np.array([[0,1,2]]),'open')

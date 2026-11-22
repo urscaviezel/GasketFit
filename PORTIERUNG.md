@@ -109,3 +109,12 @@ Bibliotheken bleiben enthalten. Benötigt wird ein eingerichtetes Desktop-Linux
 mit diesen Bibliotheken. Das bereinigte Paket startet laut Anwender auf CachyOS;
 Fensterstart, Berechnungen und Exporte wurden zusätzlich unter Ubuntu 24.04 geprüft.
 Die ältere Buildbasis bleibt eine separate, noch ausstehende Verbesserung.
+
+### Linux-Archivformat
+
+Linux-Pakete werden als `.tar.gz` ausgeliefert, um Unix-Dateirechte und symbolische
+Verknüpfungen mit den üblichen Linux-Entpackern zu erhalten. Windows und macOS
+behalten ZIP. Das Release 0.62.1 verwendet das unveränderte, vom Anwender auf
+CachyOS getestete Originalarchiv. Das zwischenzeitlich erzeugte Linux-ZIP wurde
+zurückgezogen. Der ZIP-Fehler auf CachyOS ließ sich mit Ubuntu `unzip` nicht
+reproduzieren; die konkrete Ursache ist daher nicht abschließend geklärt.

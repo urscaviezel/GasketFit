@@ -42,7 +42,8 @@ def package_name(version, system=None, machine=None):
     label = {'win32':'Windows', 'linux':'Linux', 'darwin':'macOS'}.get(system)
     if not architecture or not label:
         return None
-    return f'GasketFit-{version}-{label}-{architecture}.zip'
+    extension = '.tar.gz' if system == 'linux' else '.zip'
+    return f'GasketFit-{version}-{label}-{architecture}{extension}'
 
 
 def supports_in_app_update():
