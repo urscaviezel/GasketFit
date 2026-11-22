@@ -9,6 +9,9 @@ guard=SingleInstance(app,directory=folder)
 primary=guard.start()
 if sys.argv[1]=='client':
     raise SystemExit(1 if primary else 0)
+if sys.argv[1]=='claim':
+    guard.close()
+    raise SystemExit(0 if primary else 1)
 assert primary
 guard.activated.connect(lambda:(folder.joinpath('activated').write_text('yes'),app.quit()))
 app.aboutToQuit.connect(guard.close)

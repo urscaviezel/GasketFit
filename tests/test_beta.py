@@ -5,6 +5,22 @@ from gasketfit import online,platform_support as ports
 
 
 class BetaDistribution(unittest.TestCase):
+    def test_crashed_instance_does_not_block_next_start(self):
+        helper=Path(__file__).with_name('single_instance_helper.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            owner=subprocess.Popen([sys.executable,str(helper),'owner',directory])
+            try:
+                deadline=time.monotonic()+12
+                while not (root/'ready').exists() and time.monotonic()<deadline:
+                    self.assertIsNone(owner.poll());time.sleep(.05)
+                self.assertTrue((root/'ready').exists())
+                owner.kill();owner.wait(timeout=5)
+                claimed=subprocess.run([sys.executable,str(helper),'claim',directory],timeout=10)
+                self.assertEqual(claimed.returncode,0)
+            finally:
+                if owner.poll() is None:owner.terminate();owner.wait(timeout=5)
+
     def test_portable_and_installed_settings_locations(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(ports.sys,'platform','win32'), patch.dict(os.environ,{},clear=True):
             root=Path(directory)/'app'; root.mkdir()
