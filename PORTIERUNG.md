@@ -1,7 +1,11 @@
 # GasketFit: Linux und macOS vorbereiten
 
 Die freigegebene Windows-Referenz bleibt **0.60.0**. Die Portierung wird getrennt
-als **0.61.0** entwickelt. Qt/PySide bleibt das UI-Framework.
+ab **0.61.0** entwickelt; die öffentliche Beta ist **0.62.0**.
+Qt/PySide bleibt das UI-Framework. Windows bietet portable ZIP und Setup;
+der Installer speichert Benutzerdaten unter `%LOCALAPPDATA%\GasketFit`.
+Die Version 0.61.0 wurde inzwischen auch auf CachyOS kompiliert und mit
+vollständigen Workflows und Exporten vom Anwender geprüft.
 
 ## Aus dem Quellcode starten
 
