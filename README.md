@@ -57,10 +57,34 @@ requires Inno Setup 6. Linux source and build environments must be on a
 case-sensitive filesystem. The manual GitHub Actions workflow builds packages
 without publishing them automatically.
 
-Technical details: [platform builds](PORTIERUNG.md), [storage and updates](BETA.md),
-[release packaging](UPDATES.md). GasketFit uses the MIT license; bundled third-party
-components retain their own licenses. The repository contains application assets,
-not personal head scans or development projects.
+On Ubuntu, install the Qt desktop dependencies before building:
+
+```sh
+sudo apt install python3.12-venv libxcb-cursor0 libegl1 libopengl0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xkb1
+```
+
+Linux builds require a case-sensitive filesystem for both source and virtual
+environment (under WSL, use the Linux filesystem rather than `/mnt/c`). The build
+checks the packaged application, including calculations and exports. The current
+Linux build targets Ubuntu 24.04 and newer compatible systems; native Wayland and
+older distributions are not yet validated.
+
+### For maintainers
+
+Use numeric `vX.Y.Z` tags and publish beta builds as GitHub pre-releases. Upload
+packages and `checksums.json` (asset filename → SHA-256) to a draft, verify them,
+then publish. Linux packages use `.tar.gz`; Windows portable and macOS use `.zip`.
+Only publish macOS packages after native testing. Keep credentials and personal
+scans out of the repository.
+
+Language catalogues are UTF-8 JSON in `gasketfit/lang` (bundled) and `lang`
+(downloadable). Use `en.json` as the template; retain message keys and formatting
+placeholders. English, German and French are bundled. Additional catalogues can
+be imported in Settings; missing translations fall back to English.
+
+GasketFit uses the MIT license; bundled third-party components retain their own
+licenses. The repository contains application assets, not personal head scans or
+development projects.
 
 ---
 
@@ -119,7 +143,32 @@ Für eigenständige Pakete zusätzlich `pyinstaller` installieren und unter Wind
 und Build-Umgebung auf einem Dateisystem liegen, das Groß-/Kleinschreibung unterscheidet.
 Der manuelle GitHub-Actions-Workflow baut Pakete, veröffentlicht sie aber nicht automatisch.
 
-Technische Details: [Plattform-Builds](PORTIERUNG.md), [Speicherorte und Updates](BETA.md),
-[Release-Pakete](UPDATES.md). GasketFit steht unter der MIT-Lizenz; mitgelieferte
-Drittanbieter-Komponenten behalten ihre jeweiligen Lizenzen. Das Repository enthält
-Anwendungsdaten, keine persönlichen Kopfscans oder Entwicklungsprojekte.
+Unter Ubuntu vor dem Bauen die Qt-Desktop-Abhängigkeiten installieren:
+
+```sh
+sudo apt install python3.12-venv libxcb-cursor0 libegl1 libopengl0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xkb1
+```
+
+Linux-Builds benötigen für Quellcode und virtuelle Umgebung ein Dateisystem mit
+Unterscheidung der Groß-/Kleinschreibung (unter WSL das Linux-Dateisystem statt
+`/mnt/c` verwenden). Der Build prüft das fertige Paket einschließlich Berechnung
+und Export. Der aktuelle Linux-Build zielt auf Ubuntu 24.04 und neuere kompatible
+Systeme; natives Wayland und ältere Distributionen sind noch nicht geprüft.
+
+### Für Maintainer
+
+Numerische Tags wie `vX.Y.Z` verwenden und Beta-Builds als GitHub-Vorabversionen
+veröffentlichen. Pakete und `checksums.json` (Dateiname → SHA-256) zunächst in einen
+Entwurf hochladen, prüfen und danach veröffentlichen. Linux-Pakete verwenden
+`.tar.gz`, Windows Portable und macOS `.zip`. macOS-Pakete erst nach nativen Tests
+veröffentlichen. Zugangsdaten und persönliche Scans gehören nicht ins Repository.
+
+Sprachkataloge sind UTF-8-JSON in `gasketfit/lang` (mitgeliefert) und `lang`
+(herunterladbar). `en.json` als Vorlage verwenden; Nachrichtenschlüssel und
+Formatplatzhalter beibehalten. Englisch, Deutsch und Französisch werden mitgeliefert.
+Weitere Kataloge lassen sich in den Einstellungen importieren; fehlende
+Übersetzungen verwenden Englisch.
+
+GasketFit steht unter der MIT-Lizenz; mitgelieferte Drittanbieter-Komponenten
+behalten ihre jeweiligen Lizenzen. Das Repository enthält Anwendungsdaten,
+keine persönlichen Kopfscans oder Entwicklungsprojekte.

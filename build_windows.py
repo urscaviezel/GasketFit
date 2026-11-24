@@ -110,7 +110,7 @@ def main():
     shutil.copytree(ROOT / "gasketfit", source_dir / "gasketfit", ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
     shutil.copytree(ROOT / "native", source_dir / "native", ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
     shutil.copytree(ROOT / "installer", source_dir / "installer", dirs_exist_ok=True)
-    for name in ("run.py", "build_windows.py", "build_portable.py", "build_icons.py", "build_installer.py", "package_readme.txt", "PORTIERUNG.md", "requirements.txt", "LICENSE"):
+    for name in ("run.py", "build_windows.py", "build_portable.py", "build_icons.py", "build_installer.py", "package_readme.txt", "README.md", "requirements.txt", "LICENSE"):
         shutil.copy2(ROOT / name, source_dir / name)
     # Check the executable we ship, not merely source imports. The dedicated
     # mode builds the main window offscreen and catches startup exceptions.

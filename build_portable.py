@@ -157,7 +157,7 @@ def main():
     source = package/'source'
     shutil.copytree(ROOT/'gasketfit', source/'gasketfit',
                     ignore=shutil.ignore_patterns('__pycache__', '*.exe'), dirs_exist_ok=True)
-    for name in ('run.py', 'build_portable.py', 'requirements.txt', 'LICENSE', 'PORTIERUNG.md'):
+    for name in ('run.py', 'build_portable.py', 'requirements.txt', 'LICENSE', 'README.md'):
         shutil.copy2(ROOT/name, source/name)
         shutil.copy2(ROOT/name, package/name)
     notices = package/'licenses'
