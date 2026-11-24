@@ -75,8 +75,11 @@ def main():
         unwanted = output / "_internal" / name
         if unwanted.exists():
             unwanted.unlink()
-    for name in ("README.md", "BETA.md", "PORTIERUNG.md", "PROBE05.md", "PROBE06.md", "PROBE07.md", "PROBE09.md", "PROBE10.md", "PROBE11.md", "OEM_BASIS.md", "LANGUAGES.md", "UPDATES.md", "GEOMETRY.md", "LICENSE", "requirements.txt"):
-        shutil.copy2(ROOT / name, output / name)
+    # Remove only documents shipped by older builds, including during repacking.
+    for name in ("README.md", "BETA.md", "PORTIERUNG.md", "PROBE05.md", "PROBE06.md", "PROBE07.md", "PROBE09.md", "PROBE10.md", "PROBE11.md", "OEM_BASIS.md", "LANGUAGES.md", "UPDATES.md", "GEOMETRY.md", "requirements.txt"):
+        (output / name).unlink(missing_ok=True)
+    shutil.copy2(ROOT / 'package_readme.txt', output / 'README.txt')
+    shutil.copy2(ROOT / 'LICENSE', output / 'LICENSE')
     # Include all installed dependency notices without bundling private models.
     licenses = output / "licenses"
     licenses.mkdir(exist_ok=True)
@@ -107,7 +110,7 @@ def main():
     shutil.copytree(ROOT / "gasketfit", source_dir / "gasketfit", ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
     shutil.copytree(ROOT / "native", source_dir / "native", ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
     shutil.copytree(ROOT / "installer", source_dir / "installer", dirs_exist_ok=True)
-    for name in ("run.py", "build_windows.py", "build_portable.py", "build_icons.py", "build_installer.py", "PORTIERUNG.md", "requirements.txt", "LICENSE"):
+    for name in ("run.py", "build_windows.py", "build_portable.py", "build_icons.py", "build_installer.py", "package_readme.txt", "PORTIERUNG.md", "requirements.txt", "LICENSE"):
         shutil.copy2(ROOT / name, source_dir / name)
     # Check the executable we ship, not merely source imports. The dedicated
     # mode builds the main window offscreen and catches startup exceptions.
